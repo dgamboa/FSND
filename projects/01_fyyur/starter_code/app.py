@@ -46,7 +46,7 @@ class Venue(db.Model):
     seek_talent = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String(120))
 
-    # [x] implement missing fields, as a database migration using Flask-Migrate
+    # [x] Implement missing fields as a database migration using Flask-Migrate
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
@@ -62,10 +62,21 @@ class Artist(db.Model):
     facebook_link = db.Column(db.String(120))
     seek_venue = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String(120))
+    venues = db.relationship('Venue', secondary=Show, backref=db.backref('artists', lazy=True))
 
-    # [x] implement missing fields, as a database migration using Flask-Migrate
+    # [x] Implement missing fields as a database migration using Flask-Migrate
+    # [x] Implement relationship to shows
 
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+class Show(db.Model):
+    __tablename__ = 'Show'
+
+    id = db.Column(db.Integer, primary_key=True)
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), primary_key=True)
+    start_time = db.Column(db.DateTime)
+
+    # [x] Implement Show model and properties as a database migration using Flask-Migrate
+
 
 #----------------------------------------------------------------------------#
 # Filters.
