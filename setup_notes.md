@@ -76,8 +76,14 @@ def index():
   * If there are any dependency errors, install the required modules (in my case, it mentioned my environment hadn't yet installed `psycopg2`)
   * Review the migration file generated in `migrations/versions`. If everything checks out, run `$ flask db upgrade` to apply the migration
   * Confirm that the migration set up the tables defined as models by running `$ psql <app_name>` and then `=# \dt`
-10. Design/review the models to normalize object properties and relationships
+10. Design/review the models to normalize object properties and relationships. This should include implementation of association tables or models
 11. Implement any changes via the migration process above
+12. Implement form submissions for creating new objects in the models
+  * Note to insert arrays into the database with SQL, use the ARRAY object. For example, INSERT INTO table_name (column_name) VALUES (ARRAY['a', 'b', 'c'])
+  * Create the route and associated function
+  * Instantiate an object using a variable name and the object class. Use `request.form.get(property_a)` or `request.form.getlist(property_b)` to define the object's properties
+  * Persist the object to the database with `db.session.add(venue)` and `db.session.commit()`
+  * Implement error handling and `flashes` as user messages for errors
 
 
 
