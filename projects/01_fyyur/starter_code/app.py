@@ -455,8 +455,56 @@ def show_artist(artist_id):
     "past_shows_count": 0,
     "upcoming_shows_count": 3,
   }
-  data = list(filter(lambda d: d['id'] == artist_id, [data1, data2, data3]))[0]
+
+  artists = Artist.query.join(Artist.shows, isouter=True).all()
+  now = datetime.datetime.now()
+  present_date = datetime.date(now.year, now.month, now.day)
+  artists_list = []
+
+  for artist in artists:
+    upcoming_shows = []
+    past_shows = []
+    upcoming_shows_count = 0
+    past_shows_count = 0
+    for show in artist.shows:
+      if show.start_time > present_date:
+        upcoming_shows_count += 1
+        upcoming_show_record = {
+          "venue_id": show.venue_id,
+          "venue_name": Venue.query.get(show.venue_id).name,
+          "venue_image_link": Venue.query.get(show.venue_id).image_link,
+          "start_time": str(show.start_time),
+        }
+        upcoming_shows.append(upcoming_show_record)
+      else:
+        past_shows_count += 1
+        past_show_record = {
+          "venue_id": show.venue_id,
+          "venue_name": Venue.query.get(show.venue_id).name,
+          "venue_image_link": Venue.query.get(show.venue_id).image_link,
+          "start_time": str(show.start_time),
+        }
+        past_shows.append(past_show_record)
+    artist_record = {
+      "id": artist.id,
+      "name": artist.name,
+      "genres": artist.genres,
+      "city": artist.city,
+      "state": artist.state,
+      "phone": artist.phone,
+      "seeking_venue": artist.seeking_venue,
+      "image_link": artist.image_link,
+      "past_shows": past_shows,
+      "upcoming_shows": upcoming_shows,
+      "past_shows_count": str(past_shows_count),
+      "upcoming_shows_count": str(upcoming_shows_count),
+    }
+    artists_list.append(artist_record)
+
+  data = list(filter(lambda d: d['id'] == artist_id, artists_list))[0]
+
   return render_template('pages/show_artist.html', artist=data)
+
 
 #  Update
 #  ----------------------------------------------------------------
