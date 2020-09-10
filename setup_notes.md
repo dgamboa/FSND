@@ -92,6 +92,12 @@ def index():
   * Use for loops to populate variables across multiple Models and associations
 14. Implement search by using the `filter` and `like` functions in Query
   * Note that we can do case insensitive search with `ilike`
+15. Serve venue and artist detail pages
+  * Create the controller that supports the `<venue|artist>/<id>` pages
+  * Query the database for `<venues|artists>`
+  * In this case we want all venues and we want to join with shows so we have access to show data for those venues that have shows. We need a left join
+  * Implement logic to include past and upcoming shows into the query results
+  * Use the `list(filter(lambda, list))` pattern to deliver the right <venue|artist> to the view
 
 
 
