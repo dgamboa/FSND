@@ -88,6 +88,10 @@ def index():
   * Confirmed that trying to create a show for a venue or artist that doesn't exists throws an error
   * [ ] Consider coming back here to change the venue_id and artist_id in the form to drop downs
   * [ ] Consider coming back here to review how we might prevent duplicate shows
+13. Implement controllers for listing venues, artists and shows
+  * Use for loops to populate variables across multiple Models and associations
+14. Implement search by using the `filter` and `like` functions in Query
+  * Note that we can do case insensitive search with `ilike`
 
 
 
