@@ -493,6 +493,8 @@ def show_artist(artist_id):
       "city": artist.city,
       "state": artist.state,
       "phone": artist.phone,
+      "facebook_link": artist.facebook_link,
+      "website": artist.website,
       "seeking_venue": artist.seeking_venue,
       "image_link": artist.image_link,
       "past_shows": past_shows,
@@ -519,7 +521,31 @@ def edit_artist(artist_id):
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
-  # TODO: take values from the form submitted, and update existing
+  error = False
+  artist = Artist.query.get(artist_id)
+  try:
+    artist.name=request.form.get('name'),
+    artist.city=request.form.get('city'),
+    artist.state=request.form.get('state'),
+    artist.phone=request.form.get('phone'),
+    artist.genres=request.form.getlist('genres'),
+    artist.facebook_link=request.form.get('facebook_link')
+    db.session.add(artist)
+    db.session.commit()
+  except Exception as e:
+    error = True
+    db.session.rollback()
+    print(f'Error ==> {e}')
+  finally:
+    db.session.close()
+  if error:
+    # [x] On unsuccessful db update, flash an error
+    flash('Error: Artist ' + request.form['name'] + ' was not updated. Please check your inputs and try again :)')
+  else:
+    # on successful db update, flash success
+    flash('Artist ' + request.form['name'] + ' was successfully updated!')
+
+  # [x] Take values from the form submitted and update existing
   # artist record with ID <artist_id> using the new attributes
 
   return redirect(url_for('show_artist', artist_id=artist_id))
@@ -534,7 +560,32 @@ def edit_venue(venue_id):
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-  # TODO: take values from the form submitted, and update existing
+  error = False
+  venue = Venue.query.get(venue_id)
+  try:
+    venue.name=request.form.get('name'),
+    venue.city=request.form.get('city'),
+    venue.state=request.form.get('state'),
+    venue.address=request.form.get('address'),
+    venue.phone=request.form.get('phone'),
+    venue.genres=request.form.getlist('genres'),
+    venue.facebook_link=request.form.get('facebook_link')
+    db.session.add(venue)
+    db.session.commit()
+  except Exception as e:
+    error = True
+    db.session.rollback()
+    print(f'Error ==> {e}')
+  finally:
+    db.session.close()
+  if error:
+    # [x] On unsuccessful db update, flash an error
+    flash('Error: Venue ' + request.form['name'] + ' was not updated. Please check your inputs and try again :)')
+  else:
+    # on successful db update, flash success
+    flash('Venue ' + request.form['name'] + ' was successfully updated!')
+
+  # [x] Take values from the form submitted and update existing
   # venue record with ID <venue_id> using the new attributes
   return redirect(url_for('show_venue', venue_id=venue_id))
 
