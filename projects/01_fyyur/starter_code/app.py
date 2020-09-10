@@ -13,6 +13,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
+from datetime import datetime
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -86,7 +87,7 @@ class Show(db.Model):
 def format_datetime(value, format='medium'):
   date = dateutil.parser.parse(value)
   if format == 'full':
-      format="EEEE MMMM, d, y 'at' h:mma"
+      format="EEEE MMMM d, y 'at' h:mma"
   elif format == 'medium':
       format="EE MM, dd, y h:mma"
   return babel.dates.format_datetime(date, format)
@@ -107,30 +108,47 @@ def index():
 
 @app.route('/venues')
 def venues():
-  # TODO: replace with real venues data.
+  # [x] replace with real venues data
   #       num_shows should be aggregated based on number of upcoming shows per venue.
-  data=[{
-    "city": "San Francisco",
-    "state": "CA",
-    "venues": [{
-      "id": 1,
-      "name": "The Musical Hop",
-      "num_upcoming_shows": 0,
-    }, {
-      "id": 3,
-      "name": "Park Square Live Music & Coffee",
-      "num_upcoming_shows": 1,
-    }]
-  }, {
-    "city": "New York",
-    "state": "NY",
-    "venues": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
-  }]
-  return render_template('pages/venues.html', areas=data);
+
+
+  # data=[{
+  #   "city": "San Francisco",
+  #   "state": "CA",
+  #   "venues": [{
+  #     "id": 1,
+  #     "name": "The Musical Hop",
+  #     "num_upcoming_shows": 0,
+  #   }, {
+  #     "id": 3,
+  #     "name": "Park Square Live Music & Coffee",
+  #     "num_upcoming_shows": 1,
+  #   }]
+  # }, {
+  #   "city": "New York",
+  #   "state": "NY",
+  #   "venues": [{
+  #     "id": 2,
+  #     "name": "The Dueling Pianos Bar",
+  #     "num_upcoming_shows": 0,
+  #   }]
+  # }]
+
+  unique_areas = Venue.query.distinct('city','state').all()
+  areas = []
+
+  for area in unique_areas:
+    venues = Venue.query.filter(Venue.city == area.city, Venue.state == area.state).all()
+    # present = datetime.now()
+    # upcoming_shows = Venue.query.join(Show, Show.venue_id == Venue.id).filter(Venue.city == area.city, Venue.state == area.state, Show.start_time < present).count()
+    record = {
+      'city': area.city,
+      'state': area.state,
+      'venues': venues,
+    }
+    areas.append(record)
+
+  return render_template('pages/venues.html', areas=areas)
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
@@ -246,7 +264,7 @@ def create_venue_submission():
     venue = Venue(
     name=request.form.get('name'),
     city=request.form.get('city'),
-    state=request.form.get('city'),
+    state=request.form.get('state'),
     address=request.form.get('address'),
     phone=request.form.get('phone'),
     genres=request.form.getlist('genres'),
@@ -285,18 +303,9 @@ def delete_venue(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 def artists():
-  # TODO: replace with real data returned from querying the database
-  data=[{
-    "id": 4,
-    "name": "Guns N Petals",
-  }, {
-    "id": 5,
-    "name": "Matt Quevedo",
-  }, {
-    "id": 6,
-    "name": "The Wild Sax Band",
-  }]
-  return render_template('pages/artists.html', artists=data)
+  # [x] Replace with real data returned from querying the database
+  artists = Artist.query.all()
+  return render_template('pages/artists.html', artists=artists)
 
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
@@ -460,7 +469,7 @@ def create_artist_submission():
     artist = Artist(
     name=request.form.get('name'),
     city=request.form.get('city'),
-    state=request.form.get('city'),
+    state=request.form.get('state'),
     phone=request.form.get('phone'),
     genres=request.form.getlist('genres'),
     facebook_link=request.form.get('facebook_link')
@@ -492,45 +501,59 @@ def create_artist_submission():
 @app.route('/shows')
 def shows():
   # displays list of shows at /shows
-  # TODO: replace with real venues data.
-  #       num_shows should be aggregated based on number of upcoming shows per venue.
-  data=[{
-    "venue_id": 1,
-    "venue_name": "The Musical Hop",
-    "artist_id": 4,
-    "artist_name": "Guns N Petals",
-    "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-    "start_time": "2019-05-21T21:30:00.000Z"
-  }, {
-    "venue_id": 3,
-    "venue_name": "Park Square Live Music & Coffee",
-    "artist_id": 5,
-    "artist_name": "Matt Quevedo",
-    "artist_image_link": "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-    "start_time": "2019-06-15T23:00:00.000Z"
-  }, {
-    "venue_id": 3,
-    "venue_name": "Park Square Live Music & Coffee",
-    "artist_id": 6,
-    "artist_name": "The Wild Sax Band",
-    "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-    "start_time": "2035-04-01T20:00:00.000Z"
-  }, {
-    "venue_id": 3,
-    "venue_name": "Park Square Live Music & Coffee",
-    "artist_id": 6,
-    "artist_name": "The Wild Sax Band",
-    "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-    "start_time": "2035-04-08T20:00:00.000Z"
-  }, {
-    "venue_id": 3,
-    "venue_name": "Park Square Live Music & Coffee",
-    "artist_id": 6,
-    "artist_name": "The Wild Sax Band",
-    "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-    "start_time": "2035-04-15T20:00:00.000Z"
-  }]
-  return render_template('pages/shows.html', shows=data)
+  # [x] Replace with real venues data.
+
+  # shows_data=[{
+  #   "venue_id": 1,
+  #   "venue_name": "The Musical Hop",
+  #   "artist_id": 4,
+  #   "artist_name": "Guns N Petals",
+  #   "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+  #   "start_time": "2019-05-21T21:30:00.000Z"
+  # }, {
+  #   "venue_id": 3,
+  #   "venue_name": "Park Square Live Music & Coffee",
+  #   "artist_id": 5,
+  #   "artist_name": "Matt Quevedo",
+  #   "artist_image_link": "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+  #   "start_time": "2019-06-15T23:00:00.000Z"
+  # }, {
+  #   "venue_id": 3,
+  #   "venue_name": "Park Square Live Music & Coffee",
+  #   "artist_id": 6,
+  #   "artist_name": "The Wild Sax Band",
+  #   "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+  #   "start_time": "2035-04-01T20:00:00.000Z"
+  # }, {
+  #   "venue_id": 3,
+  #   "venue_name": "Park Square Live Music & Coffee",
+  #   "artist_id": 6,
+  #   "artist_name": "The Wild Sax Band",
+  #   "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+  #   "start_time": "2035-04-08T20:00:00.000Z"
+  # }, {
+  #   "venue_id": 3,
+  #   "venue_name": "Park Square Live Music & Coffee",
+  #   "artist_id": 6,
+  #   "artist_name": "The Wild Sax Band",
+  #   "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+  #   "start_time": "2035-04-15T20:00:00.000Z"
+  # }]
+
+  shows = Show.query.join(Show.venue).join(Show.artist).all()
+  shows_data = []
+  for show in shows:
+    record = {
+      "venue_id": show.venue_id,
+      "venue_name": show.venue.name,
+      "artist_id": show.artist_id,
+      "artist_name": show.artist.name,
+      "artist_image_link": show.artist.image_link,
+      "start_time": str(show.start_time)
+    }
+    shows_data.append(record)
+
+  return render_template('pages/shows.html', shows=shows_data)
 
 @app.route('/shows/create')
 def create_shows():
