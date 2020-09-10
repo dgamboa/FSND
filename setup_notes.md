@@ -98,6 +98,10 @@ def index():
   * In this case we want all venues and we want to join with shows so we have access to show data for those venues that have shows. We need a left join
   * Implement logic to include past and upcoming shows into the query results
   * Use the `list(filter(lambda, list))` pattern to deliver the right <venue|artist> to the view
+16. Create edit pages for artists and venues
+  * Query the artist to edit using the artist_id
+  * Instantiate a form passing the artist object queried to it with `form = ArtistForm(obj=artist)`
+
 
 
 
