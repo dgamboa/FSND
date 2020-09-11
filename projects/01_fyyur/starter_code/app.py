@@ -541,13 +541,14 @@ def edit_artist(artist_id):
 def edit_artist_submission(artist_id):
   error = False
   artist = Artist.query.get(artist_id)
+  form = ArtistForm(request.form)
   try:
-    artist.name=request.form.get('name'),
-    artist.city=request.form.get('city'),
-    artist.state=request.form.get('state'),
-    artist.phone=request.form.get('phone'),
-    artist.genres=request.form.getlist('genres'),
-    artist.facebook_link=request.form.get('facebook_link')
+    artist.name=form.name.data
+    artist.city=form.city.data
+    artist.state=form.state.data
+    artist.phone=form.phone.data
+    artist.genres=form.genres.data
+    artist.facebook_link=form.facebook_link.data
     db.session.add(artist)
     db.session.commit()
   except Exception as e:
@@ -581,12 +582,12 @@ def edit_venue_submission(venue_id):
   error = False
   venue = Venue.query.get(venue_id)
   try:
-    venue.name=request.form.get('name'),
-    venue.city=request.form.get('city'),
-    venue.state=request.form.get('state'),
-    venue.address=request.form.get('address'),
-    venue.phone=request.form.get('phone'),
-    venue.genres=request.form.getlist('genres'),
+    venue.name=request.form.get('name')
+    venue.city=request.form.get('city')
+    venue.state=request.form.get('state')
+    venue.address=request.form.get('address')
+    venue.phone=request.form.get('phone')
+    venue.genres=request.form.getlist('genres')
     venue.facebook_link=request.form.get('facebook_link')
     db.session.add(venue)
     db.session.commit()
