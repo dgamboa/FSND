@@ -338,7 +338,7 @@ def create_venue_submission():
     flash('Error: Venue ' + request.form['name'] + ' was not listed. Please check your inputs and try again :)')
   else:
     # on successful db insert, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully listed!')
+    flash(request.form['name'] + ' was successfully listed!')
 
   # [x] Insert form data as a new Venue record in the db
   # [x] Modify data to be the data object returned from db insertion
@@ -366,7 +366,7 @@ def delete_venue(venue_id):
     flash('Error: Venue ' + request.form['name'] + ' was not deleted. Please check your process and try again :)')
   else:
     # on successful db delete, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully deleted!')
+    flash(request.form['name'] + ' was successfully deleted!')
 
   # [ ] Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button will delete it from the db then redirect the user to the homepage
@@ -562,7 +562,7 @@ def edit_artist_submission(artist_id):
     flash('Error: Artist ' + request.form['name'] + ' was not updated. Please check your inputs and try again :)')
   else:
     # on successful db update, flash success
-    flash('Artist ' + request.form['name'] + ' was successfully updated!')
+    flash(request.form['name'] + ' was successfully updated!')
 
   # [x] Take values from the form submitted and update existing
   # artist record with ID <artist_id> using the new attributes
@@ -602,7 +602,7 @@ def edit_venue_submission(venue_id):
     flash('Error: Venue ' + request.form['name'] + ' was not updated. Please check your inputs and try again :)')
   else:
     # on successful db update, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully updated!')
+    flash(request.form['name'] + ' was successfully updated!')
 
   # [x] Take values from the form submitted and update existing
   # venue record with ID <venue_id> using the new attributes
@@ -641,7 +641,7 @@ def create_artist_submission():
     flash('Error: Artist ' + request.form['name'] + ' was not listed. Please check your inputs and try again :)')
   else:
     # on successful db insert, flash success
-    flash('Artist ' + request.form['name'] + ' was successfully listed!')
+    flash(request.form['name'] + ' was successfully listed!')
 
   # [x] Insert form data as a new Artist record in the db
   # [x] Modify data to be the data object returned from db insertion

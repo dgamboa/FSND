@@ -7,7 +7,7 @@
 			{{ venue.name }}
 		</h1>
 		<p class="subtitle">
-			ID: {{ venue.id }}
+			ID: {{ venue.id }} | <a href="/venues/{{ venue.id }}/edit">Edit</a> | <button class="delete-venue" data-id="{{ venue.id }}">Delete</button>
 		</p>
 		<div class="genres">
 			{% for genre in venue.genres %}
@@ -74,5 +74,20 @@
 		{% endfor %}
 	</div>
 </section>
-
+<script>
+	const deleteVenue = document.querySelectorAll('.delete-venue')[0];
+	deleteVenue.onclick = function(e) {
+		console.log('event', e);
+		const deleteVenueId = e.target.dataset['id'];
+		fetch('/venues/' + deleteVenueId , {
+			method: 'DELETE',
+		})
+		.then(function() {
+			window.location.href = "/";
+		})
+		.catch(function() {
+      console.error('Error occurred with delete list attempt');
+    })
+	}
+</script>
 {% endblock %}
