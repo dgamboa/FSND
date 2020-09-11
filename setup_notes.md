@@ -102,9 +102,15 @@ def index():
   * Query the artist to edit using the artist_id
   * Instantiate a form passing the artist object queried to it with `form = ArtistForm(obj=artist)`
 17. Create detail pages for artists and venues
-18. Add ability to delete venues
+18. Add ability to delete venues and artists
   * This uses the cascade functionality
   * In order for `$ flask db migrate` to trigger a migration version, I had to make sure `ondelete=CASCADE` on the foreign key definition in the Show table
+  * Implement controllers
+  * Update view to include appropriate HTML and JavaScript
+19. Additional features:
+  * Availability: query artist show times; check submitted form date versus those show times; if there's a match, generate an error message and rollback the form changes
+  * Recent Additions: create a controller that pulls the 10 most recent added Artists and Venues; store these into a list of 10 total items and sort by descending order; update the home view to show these
+  * Showcase: add models for albums (id, name, release_date, image, artist_id) and songs (id, name, album_id); create a controller to generate the data to pass onto the artist view; add to the artist view to display the albums and songs
 
 
 
