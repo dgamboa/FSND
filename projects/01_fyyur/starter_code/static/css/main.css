@@ -206,4 +206,24 @@ h2.monospace {
 .subtitle {
   opacity: 0.5;
 }
+.edit-item {
+  color: #090;
+  padding: 2px 5px;
+}
+.edit-item:hover {
+  background-color: #0f0;
+  color: #020;
+  text-decoration: none;
+}
+.delete-item {
+  background: none;
+  border: none;
+  color: #f00;
+  padding: 0 5px;
+}
+.delete-item:hover {
+  background-color: red;
+  color: yellow;
+  text-decoration: none;
+}
 /* Various other styles end */

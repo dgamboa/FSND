@@ -7,7 +7,7 @@
 			{{ artist.name }}
 		</h1>
 		<p class="subtitle">
-			ID: {{ artist.id }}
+			ID: {{ artist.id }}  | <a class="edit-item" href="/artists/{{ artist.id }}/edit">Edit</a> | <button class="delete-item" data-id="{{ artist.id }}">Delete</button>
 		</p>
 		<div class="genres">
 			{% for genre in artist.genres %}
@@ -33,7 +33,7 @@
 				<i class="fas fa-quote-left"></i> {{ artist.seeking_description }} <i class="fas fa-quote-right"></i>
 			</div>
 		</div>
-		{% else %}	
+		{% else %}
 		<p class="not-seeking">
 			<i class="fas fa-moon"></i> Not currently seeking performance venues
 		</p>
@@ -71,6 +71,20 @@
 		{% endfor %}
 	</div>
 </section>
-
+<script>
+	const deleteArtist = document.querySelectorAll('.delete-item')[0];
+	deleteArtist.onclick = function(e) {
+		console.log('event', e);
+		const deleteArtistId = e.target.dataset['id'];
+		fetch('/artists/' + deleteArtistId , {
+			method: 'DELETE',
+		})
+		.then(function() {
+			window.location.href = "/";
+		})
+		.catch(function() {
+      console.error('Error occurred with delete attempt');
+    })
+	}
+</script>
 {% endblock %}
-

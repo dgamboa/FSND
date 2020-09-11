@@ -350,7 +350,7 @@ def create_venue_submission():
 def delete_venue(venue_id):
   # [x] Complete this endpoint for taking a venue_id, and using
   # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
+  error = False
   try:
     venue_to_delete = Venue.query.get(venue_id)
     db.session.delete(venue_to_delete)
@@ -363,12 +363,12 @@ def delete_venue(venue_id):
     db.session.close()
   if error:
     # [x] On unsuccessful db delete, flash an error
-    flash('Error: Venue ' + request.form['name'] + ' was not deleted. Please check your process and try again :)')
+    flash('Error: Venue was not deleted. Please check your process and try again :)')
   else:
     # on successful db delete, flash success
-    flash(request.form['name'] + ' was successfully deleted!')
+    flash('Venue was successfully deleted!')
 
-  # [ ] Implement a button to delete a Venue on a Venue Page, have it so that
+  # [x] Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button will delete it from the db then redirect the user to the homepage
   return None
 
@@ -526,7 +526,6 @@ def show_artist(artist_id):
 
   return render_template('pages/show_artist.html', artist=data)
 
-
 #  Update
 #  ----------------------------------------------------------------
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
@@ -649,6 +648,31 @@ def create_artist_submission():
   artist_id = Artist.query.order_by(db.desc(Artist.id)).all()[0].id
   return redirect(url_for('show_artist', artist_id=artist_id))
 
+@app.route('/artists/<artist_id>', methods=['DELETE'])
+def delete_artist(artist_id):
+  # [x] Complete this endpoint for taking a artist_id, and using
+  # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
+  error = False
+  try:
+    artist_to_delete = Artist.query.get(artist_id)
+    db.session.delete(artist_to_delete)
+    db.session.commit()
+  except Exception as e:
+    error = True
+    db.session.rollback()
+    print(f'Error ==> {e}')
+  finally:
+    db.session.close()
+  if error:
+    # [x] On unsuccessful db delete, flash an error
+    flash('Error: Artist was not deleted. Please check your process and try again :)')
+  else:
+    # on successful db delete, flash success
+    flash('Artist was successfully deleted!')
+
+  # [x] Implement a button to delete an Artist on an Artist Page, have it so that
+  # clicking that button will delete it from the db then redirect the user to the homepage
+  return None
 
 #  Shows
 #  ----------------------------------------------------------------
@@ -741,7 +765,7 @@ def create_show_submission():
     # On successful db insert, flash success
     flash('Show was successfully listed!')
 
-  # [*] Insert form data as a new Show record in the db, instead
+  # [x] Insert form data as a new Show record in the db, instead
 
   return render_template('pages/home.html')
 

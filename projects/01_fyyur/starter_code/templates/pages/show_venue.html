@@ -7,7 +7,7 @@
 			{{ venue.name }}
 		</h1>
 		<p class="subtitle">
-			ID: {{ venue.id }} | <a href="/venues/{{ venue.id }}/edit">Edit</a> | <button class="delete-venue" data-id="{{ venue.id }}">Delete</button>
+			ID: {{ venue.id }} | <a class="edit-item" href="/venues/{{ venue.id }}/edit">Edit</a> | <button class="delete-item" data-id="{{ venue.id }}">Delete</button>
 		</p>
 		<div class="genres">
 			{% for genre in venue.genres %}
@@ -75,7 +75,7 @@
 	</div>
 </section>
 <script>
-	const deleteVenue = document.querySelectorAll('.delete-venue')[0];
+	const deleteVenue = document.querySelectorAll('.delete-item')[0];
 	deleteVenue.onclick = function(e) {
 		console.log('event', e);
 		const deleteVenueId = e.target.dataset['id'];
@@ -86,7 +86,7 @@
 			window.location.href = "/";
 		})
 		.catch(function() {
-      console.error('Error occurred with delete list attempt');
+      console.error('Error occurred with delete attempt');
     })
 	}
 </script>
