@@ -46,7 +46,7 @@ class Venue(db.Model):
     facebook_link = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean, nullable=True, default=False)
     seeking_description = db.Column(db.String(120))
-    shows = db.relationship('Show', backref='venue', lazy=True, cascade='all, delete-orphan')
+    shows = db.relationship('Show', backref='venue', lazy=True, cascade='all, delete')
 
     # [x] Implement missing fields as a database migration using Flask-Migrate
 
@@ -64,7 +64,7 @@ class Artist(db.Model):
     facebook_link = db.Column(db.String(120))
     seeking_venue = db.Column(db.Boolean, nullable=True, default=False)
     seeking_description = db.Column(db.String(120))
-    shows = db.relationship('Show', backref='artist', lazy=True, cascade='all, delete-orphan')
+    shows = db.relationship('Show', backref='artist', lazy=True, cascade='all, delete')
 
     # [x] Implement missing fields as a database migration using Flask-Migrate
     # [x] Implement relationship to shows
@@ -73,8 +73,8 @@ class Show(db.Model):
     __tablename__ = 'Show'
 
     id = db.Column(db.Integer, primary_key=True)
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
-    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id', ondelete='CASCADE'))
+    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id', ondelete='CASCADE'))
     start_time = db.Column(db.DateTime)
 
     # [x] Implement Show model and properties as a database migration using Flask-Migrate
@@ -348,7 +348,7 @@ def create_venue_submission():
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
-  # [ ] Complete this endpoint for taking a venue_id, and using
+  # [x] Complete this endpoint for taking a venue_id, and using
   # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
 
   try:
@@ -368,7 +368,7 @@ def delete_venue(venue_id):
     # on successful db delete, flash success
     flash('Venue ' + request.form['name'] + ' was successfully deleted!')
 
-  # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
+  # [ ] Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button will delete it from the db then redirect the user to the homepage
   return None
 

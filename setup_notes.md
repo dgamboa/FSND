@@ -101,7 +101,10 @@ def index():
 16. Create edit pages for artists and venues
   * Query the artist to edit using the artist_id
   * Instantiate a form passing the artist object queried to it with `form = ArtistForm(obj=artist)`
-
+17. Create detail pages for artists and venues
+18. Add ability to delete venues
+  * This uses the cascade functionality
+  * In order for `$ flask db migrate` to trigger a migration version, I had to make sure `ondelete=CASCADE` on the foreign key definition in the Show table
 
 
 
