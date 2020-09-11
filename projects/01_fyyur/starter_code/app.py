@@ -534,7 +534,7 @@ def edit_artist(artist_id):
   artist = Artist.query.get(artist_id)
   form = ArtistForm(obj=artist)
 
-  # [*] Populate form with fields from artist with ID <artist_id>
+  # [x] Populate form with fields from artist with ID <artist_id>
   return render_template('forms/edit_artist.html', form=form, artist=artist)
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
