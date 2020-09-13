@@ -88,7 +88,7 @@ class VenueForm(Form):
         validators=[Regexp(r'\d{3}-\d{3}-\d{4}',message='phone number should be xxx-xxx-xxxx')]
     )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[URL(message='image should be URL')]
     )
     genres = SelectMultipleField(
         'genres', validators=[DataRequired()],
@@ -113,6 +113,9 @@ class VenueForm(Form):
             ('Soul', 'Soul'),
             ('Other', 'Other'),
         ]
+    )
+    website = StringField(
+        'website', validators=[URL(message='website should be URL')]
     )
     facebook_link = StringField(
         'facebook_link', validators=[URL(message='Facebook link should be URL')]
@@ -187,7 +190,7 @@ class ArtistForm(Form):
         validators=[Regexp('\d{3}-\d{3}-\d{4}',message='phone number should be xxx-xxx-xxxx')]
     )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[URL(message='image should be URL')]
     )
     genres = SelectMultipleField(
         'genres', validators=[DataRequired()],
@@ -212,6 +215,9 @@ class ArtistForm(Form):
             ('Soul', 'Soul'),
             ('Other', 'Other'),
         ]
+    )
+    website = StringField(
+        'website', validators=[URL(message='website should be URL')]
     )
     facebook_link = StringField(
         'facebook_link', validators=[URL(message='Facebook link should be URL')]
