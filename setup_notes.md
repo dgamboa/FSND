@@ -112,11 +112,14 @@ def index():
   * Recent Additions: create a controller that pulls the 10 most recent added Artists and Venues; store these into a list of 10 total items and sort by descending order; update the home view to show these
   * Showcase: add models for albums (id, name, release_date, image, artist_id) and songs (id, name, album_id); create a controller to generate the data to pass onto the artist view; add to the artist view to display the albums and songs
 
-
-
-
-x. Review the config file to check for the database connection and insert the appropriate URI. Also, you might consider turning off track modifications
-```
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user@localhost:5432/app_name'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-```
+### Code Review Notes
+1. Separation of Concerns: a design principle for separating a program into sections by specific concerns (encapsulated set of information). Benefits include:
+  * Clearer code
+  * Better reusability
+  * Easier to test
+  * Easier to organize simultaneous development by a team of engineers
+2. Separate modules into independent files (i.e. move Models into models.py and leave app.py as the controllers file)
+3. Add validation for phone numbers:
+  *
+4. Fix the `csrf_token` issue by adding `{{ form.hidden_tag() }}` at the beginning of each form
+5. Remove all commented code
