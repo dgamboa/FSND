@@ -181,7 +181,8 @@ def create_venue_submission():
       phone=request.form.get('phone'),
       genres=request.form.getlist('genres'),
       website=request.form.get('website'),
-      facebook_link=request.form.get('facebook_link')
+      facebook_link=request.form.get('facebook_link'),
+      image_link=request.form.get('image_link')
       )
       db.session.add(venue)
       db.session.commit()
@@ -335,6 +336,8 @@ def edit_artist_submission(artist_id):
     artist.phone=form.phone.data
     artist.genres=form.genres.data
     artist.facebook_link=form.facebook_link.data
+    artist.image_link=form.image_link.data
+    artist.website=form.website.data
     db.session.add(artist)
     db.session.commit()
   except Exception as e:
@@ -373,6 +376,8 @@ def edit_venue_submission(venue_id):
     venue.phone=request.form.get('phone')
     venue.genres=request.form.getlist('genres')
     venue.facebook_link=request.form.get('facebook_link')
+    venue.website=request.form.get('website')
+    venue.image_link=request.form.get('image_link')
     db.session.add(venue)
     db.session.commit()
   except Exception as e:
@@ -412,7 +417,9 @@ def create_artist_submission():
       state=request.form.get('state'),
       phone=request.form.get('phone'),
       genres=request.form.getlist('genres'),
-      facebook_link=request.form.get('facebook_link')
+      facebook_link=request.form.get('facebook_link'),
+      website=request.form.get('website'),
+      image_link=request.form.get('image_link')
       )
       db.session.add(artist)
       db.session.commit()
