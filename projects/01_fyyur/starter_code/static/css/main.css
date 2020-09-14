@@ -46,6 +46,18 @@ p.lead {
 /*****************************************************************************
  * Various other styles
  ****************************************************************************/
+#seeking_talent {
+ box-shadow: none;
+ height: 20px;
+ margin: 0;
+ width: auto;
+}
+#seeking_venue {
+ box-shadow: none;
+ height: 20px;
+ margin: 0;
+ width: auto;
+}
 #front-splash {
 	width: 100%;
 }

@@ -120,6 +120,13 @@ def index():
   * Easier to organize simultaneous development by a team of engineers
 2. Separate modules into independent files (i.e. move Models into models.py and leave app.py as the controllers file)
 3. Add validation for phone numbers:
-  *
+  * Import Regexp
+  * Add the phone field with validator to forms.py
+  * Add the HTML / Jinja to the views
+  * Record the attribute in the controller
 4. Fix the `csrf_token` issue by adding `{{ form.hidden_tag() }}` at the beginning of each form
 5. Remove all commented code
+6. Incorporate the seeking_talent and the seeking_description fields into the app
+  * Update the forms by importing the BooleanField module and adding the two fields to each form class
+  * Update the controllers to appropriate handle creating and updating based on the new forms
+  * Add the HTML / Jinja to display the fields in the form on the page
