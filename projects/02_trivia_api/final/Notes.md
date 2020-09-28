@@ -19,3 +19,6 @@ flask run
 2. Set up the database using the psql file provided by running `psql trivia_test < trivia.psql`
 3. Run the test file by running `python3 test_file_name.py` to make sure everything is working
 > Note: at this point it should return something like "Ran 0 tests in 0.000s OK"
+
+### Developing the Application with TDD
+1. Write the first test, in this case to handle GET requests for all available categories, and make sure it fails; then write the endpoint that will make it pass
