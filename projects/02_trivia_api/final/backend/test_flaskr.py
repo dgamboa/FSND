@@ -39,6 +39,47 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['categories']))
+        self.assertTrue(data['totalCategories'])
+
+    def test_get_paginated_questions(self):
+        res = self.client().get('/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['totalQuestions'])
+        self.assertTrue(len(data['questions']))
+        self.assertIsNone(data['currentCategory'])
+        self.assertTrue(len(data['categories']))
+
+    def test_404_sent_request_beyond_valid_page(self):
+        res = self.client().get('/questions?page=1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    # def test_delete_question(self):
+    #     res = self.client().delete('/questions/2')
+    #     data = json.loads(res.data)
+    #
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertEqual(data['deleted'], 2)
+    #     self.assertTrue(data['totalQuestions'])
+    #     self.assertTrue(len(data['questions']))
+    #     self.assertIsNone(data['currentCategory'])
+    #     self.assertTrue(len(data['categories']))
+
+    def test_422_if_question_to_delete_does_not_exist(self):
+        res = self.client().delete('/questions/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessable')
 
 
 # Make the tests conveniently executable
