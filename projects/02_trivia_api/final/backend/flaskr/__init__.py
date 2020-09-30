@@ -137,6 +137,9 @@ def create_app(test_config=None):
   of the questions list in the "List" tab.
   '''
 
+  # @app.route('')
+  # def ():
+
   '''
   @TODO:
   Create a POST endpoint to get questions based on a search term.
@@ -176,6 +179,14 @@ def create_app(test_config=None):
   including 404 and 422.
   '''
 
+  @app.errorhandler(400)
+  def bad_request(error):
+      return jsonify({
+        'success': False,
+        'error': 400,
+        'message': 'bad request'
+      }), 400
+
   @app.errorhandler(404)
   def not_found(error):
       return jsonify({
@@ -191,5 +202,13 @@ def create_app(test_config=None):
         'error': 422,
         'message': 'unprocessable'
       }), 422
+
+  @app.errorhandler(500)
+  def internal_server_error(error):
+      return jsonify({
+        'success': False,
+        'error': 500,
+        'message': 'internal server error'
+      }), 500
 
   return app
