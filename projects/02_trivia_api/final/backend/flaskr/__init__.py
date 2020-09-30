@@ -103,13 +103,13 @@ def create_app(test_config=None):
     try:
       question = Question.query.filter(Question.id == question_id).one_or_none()
 
-      categories = Category.query.order_by(Category.id).all()
-      formatted_categories = [category.format() for category in categories]
-
       if question is None:
         abort(404)
 
       question.delete()
+
+      categories = Category.query.order_by(Category.id).all()
+      formatted_categories = [category.format() for category in categories]
       selection = Question.query.order_by(Question.id).all()
       questions_page = paginate_questions(request, selection)
 
@@ -137,8 +137,48 @@ def create_app(test_config=None):
   of the questions list in the "List" tab.
   '''
 
-  # @app.route('')
-  # def ():
+  @app.route('/questions', methods=['POST'])
+  def create_new_question():
+    body = request.get_json()
+
+    new_question = body.get('question', None)
+    new_answer = body.get('answer', None)
+    new_category = body.get('category', None)
+    new_difficulty = body.get('difficulty', None)
+    search = body.get('search', None)
+
+    try:
+      if search:
+        selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
+        questions_page = paginate_questions(request, selection)
+
+        return jsonify({
+          'success': True,
+          'questions': questions_page,
+          'totalQuestions': selection.count()
+        })
+
+      else:
+        question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+        question.insert()
+
+        categories = Category.query.order_by(Category.id).all()
+        formatted_categories = [category.format() for category in categories]
+        selection = Question.query.order_by(Question.id).all()
+        questions_page = paginate_questions(request, selection)
+
+        return jsonify({
+          'success': True,
+          'created': question.id,
+          'questions': questions_page,
+          'totalQuestions': len(Question.query.all()),
+          'categories': formatted_categories
+        })
+
+    except:
+      abort(422)
+
+
 
   '''
   @TODO:
@@ -151,6 +191,8 @@ def create_app(test_config=None):
   Try using the word "title" to start.
   '''
 
+  # See above for modified /questions POST route
+
   '''
   @TODO:
   Create a GET endpoint to get questions based on category.
@@ -160,6 +202,22 @@ def create_app(test_config=None):
   category to be shown.
   '''
 
+  @app.route('/categories/<int:category_id>/questions')
+  def retrieve_questions_by_category(category_id):
+    try:
+      selection = Question.query.order_by(Question.id).filter(Question.category == category_id).all()
+      questions_page = paginate_questions(request, selection)
+      current_category = Category.query.filter(Category.id == category_id).first().type
+
+      return jsonify({
+        'success': True,
+        'questions': questions_page,
+        'totalQuestions': len(selection),
+        'currentCategory': current_category
+      })
+
+    except:
+      abort(422)
 
   '''
   @TODO:
@@ -194,6 +252,14 @@ def create_app(test_config=None):
         'error': 404,
         'message': 'resource not found'
       }), 404
+
+  @app.errorhandler(405)
+  def not_found(error):
+      return jsonify({
+        'success': False,
+        'error': 405,
+        'message': 'method not allowed'
+      }), 405
 
   @app.errorhandler(422)
   def unprocessable(error):

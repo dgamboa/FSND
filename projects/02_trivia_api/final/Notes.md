@@ -22,3 +22,4 @@ flask run
 
 ### Developing the Application with TDD
 1. Write the first test, in this case to handle GET requests for all available categories, and make sure it fails; then write the endpoint that will make it pass
+2. This was a [good resource](https://linuxize.com/post/curl-post-request/) to issue curl commands while testing the application beyond the unittest

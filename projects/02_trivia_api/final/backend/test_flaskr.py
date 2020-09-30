@@ -18,6 +18,13 @@ class TriviaTestCase(unittest.TestCase):
         self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
+        self.new_question = {
+            'question': 'What is the capital of Texas?',
+            'answer': 'Austin',
+            'difficulty': 1,
+            'category': 3
+        }
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -80,6 +87,66 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unprocessable')
+
+    def test_post_new_question(self):
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['totalQuestions'])
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(len(data['categories']))
+
+    def test_500_if_create_question_fails_from_empty_form(self):
+        res = self.client().post('/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 500)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'internal server error')
+
+    def test_422_if_create_question_fails_from_empty_form(self):
+        self.incorrect_question = {
+            'question': 'What is the capital of Texas?',
+            'answer': 'Austin',
+            'difficulty': 1,
+            'category': 'Geography'
+        }
+
+        res = self.client().post('/questions', json=self.incorrect_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessable')
+
+    def test_get_questions_search_with_results(self):
+        res = self.client().post('/questions', json={'search': 'title'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['totalQuestions'])
+        self.assertEqual(len(data['questions']), 2)
+
+    def test_get_questions_search_without_results(self):
+        res = self.client().post('/questions', json={'search': 'xyz123'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['totalQuestions'], 0)
+        self.assertEqual(len(data['questions']), 0)
+
+    def test_get_questions_based_on_category(self):
+        res = self.client().get('/categories/3/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        # self.assertTrue(data['totalQuestions'])
+        # self.assertTrue(len(data['questions']))
 
 
 # Make the tests conveniently executable
