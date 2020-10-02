@@ -389,7 +389,7 @@ Other errors handled by the API include:
 }
 ```
 
-#### GET /categories/{int:category_id}/questions
+#### GET /categories/{category_id}/questions
 * Returns the chosen category, a list of question objects based on that category and the total number of questions in that category.
 * Sample: `curl http://127.0.0.1:5000/categories/6/questions`
 ```
