@@ -47,7 +47,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['categories']))
-        self.assertTrue(data['totalCategories'])
+        self.assertTrue(data['total_categories'])
 
     def test_get_paginated_questions(self):
         res = self.client().get('/questions')
@@ -55,9 +55,9 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['totalQuestions'])
+        self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['questions']))
-        self.assertIsNone(data['currentCategory'])
+        self.assertIsNone(data['current_category'])
         self.assertTrue(len(data['categories']))
 
     def test_404_sent_request_beyond_valid_page(self):
@@ -75,9 +75,9 @@ class TriviaTestCase(unittest.TestCase):
     #     self.assertEqual(res.status_code, 200)
     #     self.assertEqual(data['success'], True)
     #     self.assertEqual(data['deleted'], 2)
-    #     self.assertTrue(data['totalQuestions'])
+    #     self.assertTrue(data['total_questions'])
     #     self.assertTrue(len(data['questions']))
-    #     self.assertIsNone(data['currentCategory'])
+    #     self.assertIsNone(data['current_category'])
     #     self.assertTrue(len(data['categories']))
 
     def test_422_if_question_to_delete_does_not_exist(self):
@@ -94,7 +94,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['totalQuestions'])
+        self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['questions']))
         self.assertTrue(len(data['categories']))
 
@@ -127,7 +127,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['totalQuestions'])
+        self.assertTrue(data['total_questions'])
         self.assertEqual(len(data['questions']), 2)
 
     def test_questions_search_without_results(self):
@@ -136,7 +136,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['totalQuestions'], 0)
+        self.assertEqual(data['total_questions'], 0)
         self.assertEqual(len(data['questions']), 0)
 
     def test_get_questions_based_on_category(self):
@@ -145,8 +145,6 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        # self.assertTrue(data['totalQuestions'])
-        # self.assertTrue(len(data['questions']))
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

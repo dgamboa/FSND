@@ -149,7 +149,7 @@ def create_app(test_config=None):
     new_answer = body.get('answer', None)
     new_category = body.get('category', None)
     new_difficulty = body.get('difficulty', None)
-    search = body.get('search', None)
+    search = body.get('searchTerm', None)
 
     try:
       if search:
@@ -159,7 +159,8 @@ def create_app(test_config=None):
         return jsonify({
           'success': True,
           'questions': questions_page,
-          'total_questions': selection.count()
+          'total_questions': selection.count(),
+          'current_category': None
         })
 
       else:
@@ -182,7 +183,8 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-
+    # Test
+    #
 
   '''
   @TODO:
