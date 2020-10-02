@@ -90,10 +90,6 @@ def create_app(test_config=None):
       'current_category': None
     })
 
-  # Test
-  # curl localhost:5000/questions
-  # curl localhost:5000/questions?page=1
-
   '''
   @TODO:
   Create an endpoint to DELETE question using a question ID.
@@ -183,9 +179,6 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-    # Test
-    #
-
   '''
   @TODO:
   Create a POST endpoint to get questions based on a search term.
@@ -264,10 +257,6 @@ def create_app(test_config=None):
 
     except:
       abort(422)
-
-  # Test
-  # curl -X POST -H "Content-Type: application/json" -d '{}' localhost:5000/quizzes
-  # curl -X POST -H "Content-Type: application/json" -d '{"previous_questions": [20,22], "quiz_category": {"type": "Science", "id": "1"}}' localhost:5000/quizzes
 
   '''
   @TODO:
