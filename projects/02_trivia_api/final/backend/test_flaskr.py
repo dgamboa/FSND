@@ -121,7 +121,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unprocessable')
 
-    def test_get_questions_search_with_results(self):
+    def test_questions_search_with_results(self):
         res = self.client().post('/questions', json={'search': 'title'})
         data = json.loads(res.data)
 
@@ -130,7 +130,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['totalQuestions'])
         self.assertEqual(len(data['questions']), 2)
 
-    def test_get_questions_search_without_results(self):
+    def test_questions_search_without_results(self):
         res = self.client().post('/questions', json={'search': 'xyz123'})
         data = json.loads(res.data)
 
@@ -147,7 +147,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         # self.assertTrue(data['totalQuestions'])
         # self.assertTrue(len(data['questions']))
-
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

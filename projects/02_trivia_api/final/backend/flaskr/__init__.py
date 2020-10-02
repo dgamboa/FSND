@@ -223,13 +223,45 @@ def create_app(test_config=None):
   @TODO:
   Create a POST endpoint to get questions to play the quiz.
   This endpoint should take category and previous question parameters
-  and return a random questions within the given category,
+  and return a random question within the given category,
   if provided, and that is not one of the previous questions.
 
   TEST: In the "Play" tab, after a user selects "All" or a category,
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not.
   '''
+
+  @app.route('/quizzes', methods=['POST'])
+  def play_quiz():
+    body = request.get_json()
+    previous_questions = body.get('previous_questions', [])
+    quiz_category = body.get('quiz_category', None)
+
+    try:
+      if quiz_category:
+        quiz_questions = Question.query.filter(Question.category == quiz_category['id']).filter(Question.id.notin_(previous_questions)).all()
+      else:
+        quiz_questions = Question.query.filter(Question.id.notin_(previous_questions)).all()
+
+      # quiz_questions_formatted = [question.format() for question in quiz_questions]
+      # current_question = random.choice(quiz_questions_formatted)
+      current_question = random.choice(quiz_questions)
+      current_question_formatted = current_question.format()
+
+      previous_questions.append(current_question_formatted['id'])
+
+      return jsonify({
+        'success': True,
+        'previousQuestions': previous_questions,
+        'currentQuestion': current_question_formatted
+      })
+
+    except:
+      abort(422)
+
+  # Test
+  # curl -X POST -H "Content-Type: application/json" -d '{}' localhost:5000/quizzes
+  # curl -X POST -H "Content-Type: application/json" -d '{"previous_questions": [20,22], "quiz_category": {"type": "Science", "id": "1"}}' localhost:5000/quizzes
 
   '''
   @TODO:
