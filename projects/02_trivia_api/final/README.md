@@ -1,44 +1,68 @@
-# Full Stack API Final Project
+# Full Stack Trivia Application
 
-## Full Stack Trivia
+This is the second major project in the Udacity Full Stack nanodegree. The source code from Udacity comes with a pre-built React frontend that needs minor updates. The backend is mostly empty for students to build a fully functioning API to be tested with unittest, curl and ultimately to be linked to the pre-built frontend. The primary objective of the project is to practice structuring API endpoints by implementing Flask, CORS, routes, HTTP, curl, TDD and JSON, among other supporting technologies and modules.
 
-Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a  webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out.
+The Trivia Application consists of a database of trivia question and answers classified into various categories. Users have the ability to display questions, show answers, add questions, delete questions, search for questions as well as play a quiz game that randomizes questions and tracks score.
 
-That's where you come in! Help them finish the trivia app so they can start holding trivia and seeing who's the most knowledgeable of the bunch. The application must:
+## Getting Started: Backend
 
-1) Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer. 
-2) Delete questions.
-3) Add questions and require that they include question and answer text.
-4) Search for questions based on a text query string.
-5) Play the quiz game, randomizing either all questions or within a specific category.
+### Pre-Requisites and Local Development
+In order to use this project, users will need to install Python3, pip and node on their local environments. To get started, navigate to the backend directory and follow these instructions:
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others.
+### Dependencies
+To ensure all dependencies are installed run:
+```
+pip install -r requirements.txt
+```
 
-## Tasks
+### Database
+In order to populate the database with a starter set of questions, run:
+```
+psql trivia < trivia.psql
+```
 
-There are `TODO` comments throughout project. Start by reading the READMEs in:
+### Running App
+To run the application, execute the following from the command line:
+```
+export FLASK_APP=flaskr
+export FLASK_ENV=development
+flask run
+```
 
-1. [`./frontend/`](./frontend/README.md)
-2. [`./backend/`](./backend/README.md)
+The backend application will now be running on `http://127.0.0.1:5000/` and can be accessed via curl.
 
-We recommend following the instructions in those files in order. This order will look familiar from our prior work in the course.
+### Testing
+To execute the endpoint test suite included in the API, run:
 
-## Starting and Submitting the Project
+> Make sure to exclude `dropdb` when running for the first time since the database doesn't yet exist in the local environment
 
-[Fork](https://help.github.com/en/articles/fork-a-repo) the [project repository]() and [Clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine. Work on the project locally and make sure to push all your changes to the remote repository before submitting the link to your repository in the Classroom.
+```
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python3 test_flaskr.py
+```
 
-## About the Stack
+## Getting Started: Frontend
 
-We started the full stack application for you. It is desiged with some key functional areas:
+### Dependencies
+The frontend uses [Node.js](https://nodejs.org/en/) and [Node Package Manager](https://www.npmjs.com/). It is built using [React](https://reactjs.org/), which is a JavaScript library for developing user interfaces. To install npm, simply navigate to the frontend directory and run:
+```
+npm install
+```
 
-### Backend
+### Running Frontend
+To run the frontend application that links to the backend, execute the following from the command line:
+```
+npm start
+```
 
-The `./backend` directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in app.py to define your endpoints and can reference models.py for DB and SQLAlchemy setup.
+## API Reference
 
-### Frontend
 
-The `./frontend` directory contains a complete React frontend to consume the data from the Flask server. You will need to update the endpoints after you define them in the backend. Those areas are marked with TODO and can be searched for expediency.
+## Authors
+* Daniel Gamboa, Udacity Full Stack Nanodegree Student
+* Udacity Project Development Team
 
-Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API.
-
-[View the README.md within ./frontend for more details.](./frontend/README.md)
+## Acknowledgements
+Thank you to the Udacity team for developing a fun and difficult exercise so I could learn by doing. Also, a big shout out to the Knowledge Database and the Mentors who diligently answer students' questions.
