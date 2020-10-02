@@ -47,7 +47,7 @@ def create_app(test_config=None):
   @app.route('/categories')
   def retrieve_categories():
     categories = Category.query.order_by(Category.id).all()
-    formatted_categories = [category.format() for category in categories]
+    formatted_categories = {category.id: category.type for category in categories}
 
     if len(formatted_categories) == 0:
       abort(404)
@@ -55,7 +55,7 @@ def create_app(test_config=None):
     return jsonify({
       'success': True,
       'categories': formatted_categories,
-      'totalCategories': len(Category.query.all())
+      'total_categories': len(Category.query.all())
     })
 
   '''
@@ -77,7 +77,7 @@ def create_app(test_config=None):
     questions_page = paginate_questions(request, selection)
 
     categories = Category.query.order_by(Category.id).all()
-    formatted_categories = [category.format() for category in categories]
+    formatted_categories = {category.id: category.type for category in categories}
 
     if len(questions_page) == 0:
       abort(404)
@@ -85,10 +85,14 @@ def create_app(test_config=None):
     return jsonify({
       'success': True,
       'questions': questions_page,
-      'totalQuestions': len(Question.query.all()),
-      'currentCategory': None,
-      'categories': formatted_categories
+      'total_questions': len(Question.query.all()),
+      'categories': formatted_categories,
+      'current_category': None
     })
+
+  # Test
+  # curl localhost:5000/questions
+  # curl localhost:5000/questions?page=1
 
   '''
   @TODO:
@@ -109,7 +113,7 @@ def create_app(test_config=None):
       question.delete()
 
       categories = Category.query.order_by(Category.id).all()
-      formatted_categories = [category.format() for category in categories]
+      formatted_categories = {category.id: category.type for category in categories}
       selection = Question.query.order_by(Question.id).all()
       questions_page = paginate_questions(request, selection)
 
@@ -117,8 +121,8 @@ def create_app(test_config=None):
         'success': True,
         'deleted': question_id,
         'questions': questions_page,
-        'totalQuestions': len(Question.query.all()),
-        'currentCategory': None,
+        'total_questions': len(Question.query.all()),
+        'current_category': None,
         'categories': formatted_categories
       })
 
@@ -155,7 +159,7 @@ def create_app(test_config=None):
         return jsonify({
           'success': True,
           'questions': questions_page,
-          'totalQuestions': selection.count()
+          'total_questions': selection.count()
         })
 
       else:
@@ -163,7 +167,7 @@ def create_app(test_config=None):
         question.insert()
 
         categories = Category.query.order_by(Category.id).all()
-        formatted_categories = [category.format() for category in categories]
+        formatted_categories = {category.id: category.type for category in categories}
         selection = Question.query.order_by(Question.id).all()
         questions_page = paginate_questions(request, selection)
 
@@ -171,7 +175,7 @@ def create_app(test_config=None):
           'success': True,
           'created': question.id,
           'questions': questions_page,
-          'totalQuestions': len(Question.query.all()),
+          'total_questions': len(Question.query.all()),
           'categories': formatted_categories
         })
 
@@ -212,8 +216,8 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'questions': questions_page,
-        'totalQuestions': len(selection),
-        'currentCategory': current_category
+        'total_questions': len(selection),
+        'current_category': current_category
       })
 
     except:
@@ -243,8 +247,6 @@ def create_app(test_config=None):
       else:
         quiz_questions = Question.query.filter(Question.id.notin_(previous_questions)).all()
 
-      # quiz_questions_formatted = [question.format() for question in quiz_questions]
-      # current_question = random.choice(quiz_questions_formatted)
       current_question = random.choice(quiz_questions)
       current_question_formatted = current_question.format()
 
@@ -252,8 +254,8 @@ def create_app(test_config=None):
 
       return jsonify({
         'success': True,
-        'previousQuestions': previous_questions,
-        'currentQuestion': current_question_formatted
+        'previous_questions': previous_questions,
+        'current_question': current_question_formatted
       })
 
     except:
