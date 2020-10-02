@@ -122,7 +122,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'unprocessable')
 
     def test_questions_search_with_results(self):
-        res = self.client().post('/questions', json={'search': 'title'})
+        res = self.client().post('/questions', json={'searchTerm': 'title'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -131,7 +131,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(len(data['questions']), 2)
 
     def test_questions_search_without_results(self):
-        res = self.client().post('/questions', json={'search': 'xyz123'})
+        res = self.client().post('/questions', json={'searchTerm': 'xyz123'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
