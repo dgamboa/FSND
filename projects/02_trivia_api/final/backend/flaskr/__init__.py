@@ -149,7 +149,8 @@ def create_app(test_config=None):
 
     try:
       if search:
-        selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
+        selection = Question.query.order_by(Question.id) \
+                    .filter(Question.question.ilike('%{}%'.format(search)))
         questions_page = paginate_questions(request, selection)
 
         return jsonify({
@@ -204,9 +205,11 @@ def create_app(test_config=None):
   @app.route('/categories/<int:category_id>/questions')
   def retrieve_questions_by_category(category_id):
     try:
-      selection = Question.query.order_by(Question.id).filter(Question.category == category_id).all()
+      selection = Question.query.order_by(Question.id) \
+                  .filter(Question.category == category_id).all()
       questions_page = paginate_questions(request, selection)
-      current_category = Category.query.filter(Category.id == category_id).first().type
+      current_category = Category.query.filter(Category.id == category_id) \
+                         .first().type
 
       return jsonify({
         'success': True,
