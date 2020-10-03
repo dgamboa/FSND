@@ -146,6 +146,47 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
+    def test_quizzes_when_receiving_previous_questions(self):
+        res = self.client().post('/quizzes', json={"previous_questions": [20,22], "quiz_category": {"type": "Science", "id": "1"}})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['current_question']))
+        self.assertTrue(len(data['previous_questions']))
+
+    def test_quizzes_when_not_receiving_previous_questions(self):
+        res = self.client().post('/quizzes', json={"previous_questions": [], "quiz_category": {"type": "Science", "id": "1"}})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['current_question']))
+        self.assertEqual(data['previous_questions'], [])
+
+    def test_quizzes_when_not_receiving_a_category(self):
+        res = self.client().post('/quizzes', json={"previous_questions": [], "quiz_category": {"type": "", "id": "0"}})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['current_question']))
+        self.assertEqual(data['previous_questions'], [])
+
+    def test_quizzes_error_500_when_post_excludes_category_object(self):
+        res = self.client().post('/quizzes', json={"previous_questions": []})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 500)
+        self.assertEqual(data['success'], False)
+
+    def test_quizzes_error_422_when_post_includes_wrong_previous_questions_id(self):
+        res = self.client().post('/quizzes', json={"previous_questions": ["A"], "quiz_category": {"type": "", "id": "0"}})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
