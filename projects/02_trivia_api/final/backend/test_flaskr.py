@@ -127,7 +127,6 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['total_questions'])
         self.assertEqual(len(data['questions']), 2)
 
     def test_questions_search_without_results(self):
@@ -177,7 +176,7 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().post('/quizzes', json={"previous_questions": []})
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 500)
+        self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
 
     def test_quizzes_error_422_when_post_includes_wrong_previous_questions_id(self):

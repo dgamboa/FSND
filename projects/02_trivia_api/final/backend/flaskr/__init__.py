@@ -238,7 +238,10 @@ def create_app(test_config=None):
     body = request.get_json()
     previous_questions = body.get('previous_questions', [])
     quiz_category = body.get('quiz_category', None)
-    category_id = int(quiz_category['id'])
+    if quiz_category:
+      category_id = int(quiz_category['id'])
+    else:
+      abort(400)
 
     try:
       if category_id != 0:
