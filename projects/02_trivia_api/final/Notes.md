@@ -23,3 +23,4 @@ flask run
 ### Developing the Application with TDD
 1. Write the first test, in this case to handle GET requests for all available categories, and make sure it fails; then write the endpoint that will make it pass
 2. This was a [good resource](https://linuxize.com/post/curl-post-request/) to issue curl commands while testing the application beyond the unittest
+3. In order to select random records using SQLAlchemy, we can use the `.order_by(func.random())` filter in PostgreSQL. For more details, see [this stackoverflow answer](https://stackoverflow.com/questions/60805/getting-random-row-through-sqlalchemy).
