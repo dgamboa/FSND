@@ -4,7 +4,6 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-
 app = Flask(__name__)
 
 AUTH0_DOMAIN = 'rocketree.us.auth0.com'
@@ -104,7 +103,6 @@ def verify_decode_jwt(token):
                 'description': 'Unable to find the appropriate key.'
             }, 400)
 
-
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
         raise AuthError({
@@ -128,19 +126,16 @@ def requires_auth(permission=''):
                 payload = verify_decode_jwt(token)
             except:
                 abort(401)
-
             check_permissions(permission, payload)
-
             return f(payload, *args, **kwargs)
-
         return wrapper
     return requires_auth_decorator
 
-@app.route('/headers')
-@requires_auth
-def headers(payload):
-    print(payload)
-    return 'Access Granted'
+# @app.route('/headers')
+# @requires_auth
+# def headers(payload):
+#     print(payload)
+#     return 'Access Granted'
 
 @app.route('/image')
 @requires_auth('get:images')
