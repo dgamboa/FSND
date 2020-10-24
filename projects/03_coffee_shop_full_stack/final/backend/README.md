@@ -53,7 +53,9 @@ The `--reload` flag will detect file changes and restart the server automaticall
 ### Setup Auth0
 
 1. Create a new Auth0 Account
-2. Select a unique tenant domain
+2. Select a [unique tenant domain](https://auth0.com/docs/get-started/learn-the-basics)
+    - Note that you can do this by clicking on your profile picture on Auth0
+    - Then select create tenant from the drop down menu
 3. Create a new, single page web application
 4. Create a new API
     - in API Settings:
@@ -69,7 +71,7 @@ The `--reload` flag will detect file changes and restart the server automaticall
         - can `get:drinks-detail`
     - Manager
         - can perform all actions
-7. Test your endpoints with [Postman](https://getpostman.com). 
+7. Test your endpoints with [Postman](https://getpostman.com).
     - Register 2 users - assign the Barista role to one and Manager role to the other.
     - Sign into each account and make note of the JWT.
     - Import the postman collection `./starter_code/backend/udacity-fsnd-udaspicelatte.postman_collection.json`
@@ -83,3 +85,6 @@ There are `@TODO` comments throughout the `./backend/src`. We recommend tackling
 
 1. `./src/auth/auth.py`
 2. `./src/api.py`
+
+### Appendix: URL for CoffeeShop
+https://coffee-shop-dgamboa.us.auth0.com/authorize?audience=menu&response_type=token&client_id=D4kL1MEd0k0w3PL8BvqjqQWxZWLVGWOz&redirect_uri=https://localhost:8080/login-results
