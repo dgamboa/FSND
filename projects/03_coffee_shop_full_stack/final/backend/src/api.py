@@ -75,7 +75,29 @@ def get_drinks_detail(payload):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks', methods=['POST'])
+@requires_auth('post:drinks')
+def create_drink(payload):
+    try:
+        data = request.get_json()
 
+        if not ('title' in data and 'recipe' in data):
+            abort(400)
+
+        drink = Drink(
+            title=data['title'],
+            recipe=json.dumps(data['recipe'])
+        )
+
+        drink.insert()
+
+        return jsonify({
+            'success': True,
+            'drinks': drink.long()
+        })
+    except BaseException as e:
+        print(e)
+        abort(400)
 
 '''
 @TODO implement endpoint
@@ -88,7 +110,29 @@ def get_drinks_detail(payload):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks/<drink_id>', methods=['PATCH'])
+@requires_auth('patch:drinks')
+def update_drink(payload, drink_id):
+    try:
+        drink = Drink.query.get(drink_id)
 
+        if not drink:
+            abort(404)
+
+        body = request.get_json()
+        new_title = body.get('title', None)
+
+        drink.title = new_title
+        drink.update()
+
+        return jsonify({
+            'success': True,
+            'drinks': drink.long()
+        })
+
+    except BaseException as e:
+        print(e)
+        abort(400)
 
 '''
 @TODO implement endpoint
@@ -100,7 +144,21 @@ def get_drinks_detail(payload):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks/<drink_id>', methods=['DELETE'])
+@requires_auth('delete:drinks')
+def delete_drink(payload, drink_id):
+    try:
+        drink = Drink.query.get(drink_id)
 
+        drink.delete()
+
+        return jsonify({
+            'success': True,
+            'delete': drink_id
+        })
+    except BaseException as e:
+        print(e)
+        abort(400)
 
 ## Error Handling
 '''
