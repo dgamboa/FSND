@@ -114,15 +114,21 @@ def update_drink(payload, drink_id):
     try:
         drink = Drink.query.get(drink_id)
 
-        body = request.get_json()
-        new_title = body.get('title', None)
+        data = request.get_json()
+        new_title = data.get('title', None)
+        new_recipe = json.dumps(data.get('recipe', None))
 
-        drink.title = new_title
+        if new_title:
+            drink.title = new_title
+
+        if new_recipe:
+            drink.recipe = new_recipe
+
         drink.update()
 
         return jsonify({
             'success': True,
-            'drinks': drink.long()
+            'drinks': [drink.long()]
         })
 
     except BaseException as e:
