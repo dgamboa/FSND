@@ -165,7 +165,7 @@ def delete_drink(payload, drink_id):
 Example error handling for unprocessable entity
 '''
 @app.errorhandler(422)
-def unprocessable(error):
+def unprocessable(e):
     return jsonify({
                     "success": False,
                     "error": 422,
@@ -188,7 +188,7 @@ def unprocessable(error):
     error handler should conform to general task above
 '''
 @app.errorhandler(404)
-def not_found(error):
+def not_found(e):
     return jsonify({
                     "success": False,
                     "error": 404,
