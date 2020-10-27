@@ -11,15 +11,12 @@ app = Flask(__name__)
 setup_db(app)
 CORS(app)
 
-# Add length check with appropriate error status_code
-# Check all error status_code
-
 '''
 @TODO uncomment the following line to initialize the database
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 '''
-db_drop_and_create_all()
+# db_drop_and_create_all()
 
 ## ROUTES
 '''
@@ -116,9 +113,6 @@ def update_drink(payload, drink_id):
     try:
         drink = Drink.query.get(drink_id)
 
-        if not drink:
-            abort(404)
-
         body = request.get_json()
         new_title = body.get('title', None)
 
@@ -132,7 +126,7 @@ def update_drink(payload, drink_id):
 
     except BaseException as e:
         print(e)
-        abort(400)
+        abort(404)
 
 '''
 @TODO implement endpoint
@@ -149,7 +143,6 @@ def update_drink(payload, drink_id):
 def delete_drink(payload, drink_id):
     try:
         drink = Drink.query.get(drink_id)
-
         drink.delete()
 
         return jsonify({
@@ -158,7 +151,7 @@ def delete_drink(payload, drink_id):
         })
     except BaseException as e:
         print(e)
-        abort(400)
+        abort(404)
 
 ## Error Handling
 '''
@@ -206,3 +199,11 @@ def auth_error(e):
                     "error": e.status_code,
                     "message": e.error['code']
                     }), e.status_code
+
+@app.errorhandler(400)
+def not_found(e):
+    return jsonify({
+                    "success": False,
+                    "error": 400,
+                    "message": "bad request"
+                    }), 400
