@@ -16,6 +16,7 @@ CORS(app)
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 '''
+# Commented back after creating drink records in the database
 # db_drop_and_create_all()
 
 ## ROUTES
