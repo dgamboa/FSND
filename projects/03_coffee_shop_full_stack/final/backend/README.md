@@ -87,4 +87,4 @@ There are `@TODO` comments throughout the `./backend/src`. We recommend tackling
 2. `./src/api.py`
 
 ### Appendix: URL for CoffeeShop
-https://coffee-shop-dgamboa.us.auth0.com/authorize?audience=menu&response_type=token&client_id=D4kL1MEd0k0w3PL8BvqjqQWxZWLVGWOz&redirect_uri=https://localhost:8080/login-results
+https://coffee-shop-dgamboa.us.auth0.com/authorize?audience=menu&response_type=token&client_id=D4kL1MEd0k0w3PL8BvqjqQWxZWLVGWOz&redirect_uri=http://localhost:8080/login-results
