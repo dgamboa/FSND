@@ -1,35 +1,86 @@
-# Coffee Shop Full Stack
+# Coffee Shop Full Stack Application
 
-## Full Stack Nano - IAM Final Project
+This is the third major project in the Udacity Full Stack nanodegree. The source code from Udacity comes with a pre-built React frontend that requires configuring the environment variables to connect to the appropriate Auth0 service. The backend includes a pre-built drinks model to facilitate the development of menu API. The primary objective of the project is to implement authentication and permissions functionality using Auth0 and develop the endpoints to be able to GET, POST, PATCH and DELETE drinks in a coffee shop menu. In addition to being able to perform these functions through the browser using the frontend interface, users should also be able to use properly structured Postman requests with the appropriate tokens to interact with the database.
 
-Udacity has decided to open a new digitally enabled cafe for students to order drinks, socialize, and study hard. But they need help setting up their menu experience.
+The Coffee Shop Application consists of a menu populated from a drinks database that includes the drink's name and recipe. There are three types of users:
 
-You have been called on to demonstrate your newly learned skills to create a full stack drink menu application. The application must:
+1) Public: can view drink names and graphics.
+2) Baristas: can view drink names, graphics and recipes.
+3) Managers: can create, view, edit and delete drinks and recipes.
 
-1) Display graphics representing the ratios of ingredients in each drink.
-2) Allow public users to view drink names and graphics.
-3) Allow the shop baristas to see the recipe information.
-4) Allow the shop managers to create new drinks and edit existing drinks.
+## Getting Started
 
-## Tasks
+### Backend Pre-Requisites and Local Development
+In order to get started, you will need [Python3](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python) and [pip](https://pypi.org/project/pip/) on your local environment. In order to keep dependencies separate and organized, you should consider setting up a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) as well.
 
-There are `@TODO` comments throughout the project. We recommend tackling the sections in order. Start by reading the READMEs in:
+#### Dependencies
 
-1. [`./backend/`](./backend/README.md)
-2. [`./frontend/`](./frontend/README.md)
+Navigate to the backend directory and follow these instructions:
+
+```
+pip install -r requirements.txt
+```
+
+This will install all of the required packages within the `requirements.txt` file.
+
+##### Key Dependencies
+
+- [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
+
+- [SQLAlchemy](https://www.sqlalchemy.org/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) are libraries to handle the lightweight sqlite database. Since we want you to focus on auth, we handle the heavy lift for you in `./src/database/models.py`. We recommend skimming this code first so you know how to interface with the Drink model.
+
+- [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
+
+#### Running the Server
+
+From within the `./src` directory first ensure you are working using your created virtual environment.
+
+Each time you open a new terminal session, run:
+
+```
+export FLASK_APP=api.py;
+```
+
+To run the server, execute:
+
+```
+flask run --reload
+```
+
+The `--reload` flag will detect file changes and restart the server automatically.
+
+[For more on the backend, please refer to the README.md within the ./backend directory.](./backend/README.md)
+
+### Frontend Pre-Requisites and Local Development
+
+In order to connect the frontend to the Flask-based backend, you will need Nodejs and Node Package Manager (NPM). These can be jointly downloaded from https://nodejs.org/en/download/.
+
+You will also need the Ionic Command Line Interface to serve and build the frontend. Instructions for installing it can be found [here](https://ionicframework.com/docs/installation/cli).
+
+#### Dependencies
+
+To install all project dependencies in the package.json file located in the `./frontend` directory, open your terminal and run:
+
+```
+npm install
+```
+
+After that ensure that the proper environment variables are set inside `./src/environments/environments.ts`
+
+#### Running the Frontend Server
+
+To activate the Ionic development server, cd into the `frontend` directory and run:
+
+```
+ionic serve
+```
+
+##
+
+
 
 ## About the Stack
 
-We started the full stack application for you. It is desiged with some key functional areas:
+The Coffe Shop Application backend is based on the Flask framework in Python. It uses SQLAlchemy to interface with a SQLite database with a single Drinks table. Authentication and permissions are managed with Auth0.
 
-### Backend
-
-The `./backend` directory contains a partially completed Flask server with a pre-written SQLAlchemy module to simplify your data needs. You will need to complete the required endpoints, configure, and integrate Auth0 for authentication.
-
-[View the README.md within ./backend for more details.](./backend/README.md)
-
-### Frontend
-
-The `./frontend` directory contains a complete Ionic frontend to consume the data from the Flask server. You will only need to update the environment variables found within (./frontend/src/environment/environment.ts) to reflect the Auth0 configuration details set up for the backend app. 
-
-[View the README.md within ./frontend for more details.](./frontend/README.md)
+The frontend is built in React and uses Ionic to interface with data from the Flask server.
