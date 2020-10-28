@@ -300,6 +300,11 @@ The Coffee Shop Application backend is based on the [Flask](https://flask.pallet
 
 The frontend is built in [React](https://reactjs.org/) and uses [Ionic](https://ionicframework.com/docs/v3/api/IonicModule/) to interface with data from the Flask server.
 
+## Key Lessons Learned
+* Avoid bare exceptions. For a refresher [read this](https://realpython.com/the-most-diabolical-python-antipattern/).
+* Ensure tokens have sufficient expiration runways by adjusting the time (in seconds) in the Auth0 application settings.
+* 
+
 ## Authors
 * Daniel Gamboa, Udacity Full Stack Nanodegree Student
 * Udacity Project Development Team
