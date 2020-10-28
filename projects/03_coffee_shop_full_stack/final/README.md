@@ -75,12 +75,234 @@ To activate the Ionic development server, cd into the `frontend` directory and r
 ionic serve
 ```
 
-##
+## API Reference
 
+This app can only be run locally. The backend app is hosted at `http://127.0.0.1:5000/` and the frontend app is hosted at `http://127.0.0.1:8100/`. Authentication is performed through a third-party service called [Auth0](https://auth0.com/).
 
+### Error Handling
+If a request fails, the error object will include the following parameters in JSON format:
+```
+{
+  'success': False,
+  'error': 404,
+  'message': 'resource not found'
+}
+```
+Other errors handled by the API include:
+* 400: Bad Request
+* 401: Unauthorized
+* 422: Not Processable
+* 500: Internal Server Error
+
+### Endpoints
+These may accessed via [curl](https://curl.haxx.se/), [Postman](https://www.postman.com/) or the frontend interface.
+
+#### GET /drinks
+* Returns a list of drinks along with their ids, names and the short version of the recipes, which includes only the ingredient color and how many parts are needed to make the drink
+* Open to all users
+```
+{
+    "drinks": [
+        {
+            "id": 1,
+            "recipe": [
+                {
+                    "color": "#e1f2ec",
+                    "parts": 1
+                }
+            ],
+            "title": "Milk"
+        },
+        {
+            "id": 2,
+            "recipe": [
+                {
+                    "color": "#e1f2ec",
+                    "parts": 2
+                },
+                {
+                    "color": "black",
+                    "parts": 1
+                }
+            ],
+            "title": "Latte"
+        },
+        {
+            "id": 3,
+            "recipe": [
+                {
+                    "color": "#f4f9fc",
+                    "parts": 1
+                },
+                {
+                    "color": "#e1f2ec",
+                    "parts": 1
+                },
+                {
+                    "color": "black",
+                    "parts": 1
+                }
+            ],
+            "title": "Capuccino"
+        },
+        {
+            "id": 4,
+            "recipe": [
+                {
+                    "color": "#84cef9",
+                    "parts": 1
+                }
+            ],
+            "title": "Water"
+        }
+    ],
+    "success": true
+}
+```
+
+#### GET /drinks-detail
+* Returns a list of drinks along with their ids, names and the long version of the recipes, which includes the ingredient color, the ingredient name and how many parts are needed to make the drink
+* Requires manager- or barista-level permissions
+```
+{
+    "drinks": [
+        {
+            "id": 1,
+            "recipe": [
+                {
+                    "color": "#e1f2ec",
+                    "name": "Milk",
+                    "parts": 1
+                }
+            ],
+            "title": "Milk"
+        },
+        {
+            "id": 2,
+            "recipe": [
+                {
+                    "color": "#e1f2ec",
+                    "name": "Milk",
+                    "parts": 2
+                },
+                {
+                    "color": "black",
+                    "name": "Coffee",
+                    "parts": 1
+                }
+            ],
+            "title": "Latte"
+        },
+        {
+            "id": 3,
+            "recipe": [
+                {
+                    "color": "#f4f9fc",
+                    "name": "Froth",
+                    "parts": 1
+                },
+                {
+                    "color": "#e1f2ec",
+                    "name": "Milk",
+                    "parts": 1
+                },
+                {
+                    "color": "black",
+                    "name": "Espresso",
+                    "parts": 1
+                }
+            ],
+            "title": "Capuccino"
+        },
+        {
+            "id": 4,
+            "recipe": [
+                {
+                    "color": "#84cef9",
+                    "name": "Water",
+                    "parts": 1
+                }
+            ],
+            "title": "Water"
+        }
+    ],
+    "success": true
+}
+```
+
+#### POST /drinks
+* Creates a new drink including its name and recipe
+* Requires manager-level permissions
+```
+{
+    "drinks": {
+        "id": 5,
+        "recipe": [
+            {
+                "color": "blue",
+                "name": "Water",
+                "parts": 1
+            }
+        ],
+        "title": "Water3"
+    },
+    "success": true
+}
+```
+
+#### PATCH /drinks/{drink_id}
+* Updates a drink's name, recipe or both
+* Requires manager-level permissions
+* Sample body of request:
+```
+{
+    "title": "OJ",
+    "recipe": [{
+        "name": "Oranges",
+        "color": "orange",
+        "parts": 1
+    }]
+}
+```
+* Sample body of response:
+```
+{
+    "drinks": [
+        {
+            "id": 5,
+            "recipe": [
+                {
+                    "color": "orange",
+                    "name": "Oranges",
+                    "parts": 1
+                }
+            ],
+            "title": "OJ"
+        }
+    ],
+    "success": true
+}
+```
+
+#### DELETE /drinks/{drink_id}
+* Deletes a drink record from the menu
+* Requires manager-level permission
+```
+{
+    "delete": "5",
+    "success": true
+}
+```
 
 ## About the Stack
 
-The Coffe Shop Application backend is based on the Flask framework in Python. It uses SQLAlchemy to interface with a SQLite database with a single Drinks table. Authentication and permissions are managed with Auth0.
+The Coffee Shop Application backend is based on the [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework in Python. It uses [SQLAlchemy](https://www.sqlalchemy.org/) to interface with a [SQLite](https://sqlite.org/index.html) database with a single Drinks table. Authentication and permissions are managed with [Auth0](https://auth0.com/).
 
-The frontend is built in React and uses Ionic to interface with data from the Flask server.
+The frontend is built in [React](https://reactjs.org/) and uses [Ionic](https://ionicframework.com/docs/v3/api/IonicModule/) to interface with data from the Flask server.
+
+## Authors
+* Daniel Gamboa, Udacity Full Stack Nanodegree Student
+* Udacity Project Development Team
+
+## Acknowledgements
+Thank you to the Udacity team for developing another fun and difficult exercise.
