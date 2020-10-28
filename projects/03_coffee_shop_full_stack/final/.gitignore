@@ -1,7 +1,10 @@
+# General #
+###########
 venv/
 .vscode/
 __pycache__/
 test.db
+env/
 
 # OS generated files #
 ######################
@@ -12,4 +15,7 @@ test.db
 .Trashes
 ehthumbs.db
 Thumbs.db
-env/
+
+# Files associated with Udacity submission #
+############################################
+project.zip
